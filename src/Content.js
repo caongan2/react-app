@@ -36,12 +36,12 @@ function Content () {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5 text-center">
             <Clock array={ array } />
             <button onClick={handleButtonClick}> click </button>
             <div className="mb-3">
                 <label for="exampleFormControlInput1" className="form-label">Email address</label>
-                <input onChange={handleChangeText} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                <input onChange={handleChangeText} type="email" className="form-control" id="exampleFormControlInput1" placeholder="angan@example.com" />
             </div>
                 <div className="mb-3">
                 <label for="exampleFormControlTextarea1" className="form-label">Example textarea</label>
