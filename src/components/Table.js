@@ -148,14 +148,36 @@ const Table = (props) => {
     const users = props.data
 
     const [dataApi, setDataApi] = useState(users);
-    console.log(users)
-    const onClick = (id) => {
+
+	const onClick = (id) => {
         const updatedData = dataApi.filter(item => item.id !== id);
         setDataApi(updatedData);
     };
+
+	const handleDelete = async (userId) => {
+		try {
+		  const response = await fetch(`http://127.0.0.1:8000/api/delete/${userId}`, {
+			method: 'GET',
+			headers: {
+			  'Content-Type': 'application/json',
+			},
+		  });
+		  const data = await response.json();
+		  if (response.ok) {
+			const updatedData = dataApi.filter(item => item.id !== userId);
+        	setDataApi(updatedData);
+			console.log(data.message, data.count);
+		  } else {
+			console.error('Failed to delete user');
+		  }
+		} catch (error) {
+		  console.error('Error occurred while deleting user:', error);
+		}
+	  };
+
     return (
         <div>
-            <table class="table">
+            <table className="table">
             <thead>
                 <tr>
                 <th>ID</th>
@@ -172,7 +194,7 @@ const Table = (props) => {
                     <td>{item.username}</td> 
                     <td>{item.family_name}</td>
                     <td>{item.first_name}</td>
-                    <td><button onClick={() => onClick(item.id)} className="btn btn-danger">del</button></td>
+                    <td><button onClick={() => handleDelete(item.id)} className="btn btn-danger">del</button></td>
                 </tr>
                 ))}
             </tbody>

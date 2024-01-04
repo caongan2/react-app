@@ -12,7 +12,7 @@ const ApiExample = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/index'); // Replace with your API endpoint
+        const response = await fetch('http://127.0.0.1:8000/api/index');
         const result = await response.json();
         setData(result);
       } catch (error) {
@@ -29,7 +29,7 @@ const ApiExample = () => {
     <div>
       {loading ? (
         <div className='loading'>
-          <div class="loader"></div>
+          <div className="loader"></div>
         </div>
       ) : (
         <Table data = {data} />
