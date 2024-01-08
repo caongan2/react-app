@@ -1,39 +1,72 @@
 // src/components/ApiExample.js
 import React, { useState, useEffect } from 'react';
-import { MdHourglassEmpty } from 'react-icons/md';
 import Table from './Table';
 import '../ApiExample.css'
 
-
-const ApiExample = () => {
-  const [data, setData] = useState(null);
+const ApiExample = (props) => {
+  const [datas, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/index');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
+  const [page, setDataFromChild] = useState(1)
+  const handleDataFromChild = (childData) => {
+    setDataFromChild(childData)
+  }
+ 
+  const fetchData = async (page) => { 
+    try {
+      const params = {
+        per_page: 5,
+        page: page,
+        name: props.name
       }
-    };
 
-    fetchData();
-  }, []); 
+      const queryString = new URLSearchParams(params).toString();
+      const url = `http://127.0.0.1:8000/api/index?${queryString}`;
+      const response = await fetch(url);
+      const result = await response.json(); 
+      setData(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }  
+  };
 
+  useEffect(() => {  
+    
+    fetchData(page);  
+  },[page]);
+
+  const handleDelete = async (id)=> {
+    try {
+		  const response = await fetch(`http://127.0.0.1:8000/api/delete/${id}`, {
+			method: 'GET',
+			headers: {
+			  'Content-Type': 'application/json',
+			},
+		  }); 
+		  if (response.ok) { 
+          const newList = datas.data.filter(item => item.id != id);
+          setData({...datas, data: newList });
+		  } 
+		} catch (error) {
+		  console.error('Error occurred while deleting user:', error);
+		}
+
+  }
+  const response = {
+    limit: 10,
+    page:1,
+    datas: []
+  }
   return (
     <div>
-      {loading ? (
+       {/* {loading ? (
         <div className='loading'>
           <div className="loader"></div>
         </div>
       ) : (
-        <Table data = {data} />
-      )}
+        <Table sendDataToParent={handleDataFromChild} data = {data} />
+      )}  */}
+
+      <Table sendDataToParent={handleDataFromChild}  data={datas} onDelete={handleDelete} />
     </div>
   );
 };
