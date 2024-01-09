@@ -6,18 +6,11 @@ import About from './components/About';
 import Contact from './components/Contact';
 import ContactDetail from './components/ContactDetail';
 import Sidebar from './components/Sidebar';
+import AppRoute from './components/AppRoute';
 
 function App() {
   return (
-    <Router>
-      <Sidebar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/contact/:id" element={<ContactDetail />} />
-      </Routes>
-    </Router>
+    <AppRoute />
   );
 }
 

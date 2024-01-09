@@ -16,7 +16,7 @@ const ApiExample = (props) => {
       const params = {
         per_page: 5,
         page: page,
-        name: props.name
+        name: props.name ?? ''
       }
 
       const queryString = new URLSearchParams(params).toString();
